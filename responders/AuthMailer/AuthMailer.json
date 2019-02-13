@@ -1,0 +1,43 @@
+{
+  "name": "AuthMailer",
+  "version": "1.0",
+  "author": "masual",
+  "url": "https://github.com/masual/Cortex-Analyzers.git",
+  "license": "AGPL-V3",
+  "description": "Send an email with information from a TheHive case or alert with support for authentication",
+  "dataTypeList": ["thehive:case", "thehive:alert"],
+  "command": "AuthMailer/authmailer.py",
+  "baseConfig": "AuthMailer",
+  "configurationItems": [
+    {
+      "name": "from",
+      "description": "email address from which the mail is send",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "password",
+      "description": "Password of the email account",
+      "type": "string",
+      "multi": false,
+      "required": false
+    },
+    {
+      "name": "smtp_host",
+      "description": "SMTP server used to send mail",
+      "type": "string",
+      "multi": false,
+      "required": true,
+      "defaultValue": "localhost"
+    },
+    {
+      "name": "smtp_port",
+      "description": "SMTP server port",
+      "type": "number",
+      "multi": false,
+      "required": true,
+      "defaultValue": "25"
+    }
+  ]
+}
