@@ -30,26 +30,20 @@ class AuthMailer(Responder):
         data = self.get_param('data', None, 'Data is missing')
         data_json = json.dumps(data)
 
-
-        mail_to = None
-        if self.data_type == 'thehive:case':
+        if self.data_type == 'thehive:case' or self.data_type == 'thehive:alert':
             case_url = 'http://172.16.4.200:30021/index.html#/case/' + data['id'] + '/details'
             data_json += '\n' + case_url
-            
-        elif self.data_type == 'thehive:alert':
-            pass
         else:
             self.error('Invalid dataType')
 
         msg = MIMEMultipart()
-        msg['Subject'] = title
+        msg['Subject'] = data['id'] + ' ' + title
         msg['From'] = self.mail_from
         msg['To'] = self.mail_to
         msg.attach(MIMEText(data_json, 'plain'))
 
         if(self.subject_prefix):
             msg['Subject'] = self.subject_prefix + ' ' + msg['Subject']
-
 
         if (self.use_tls):
             server = smtplib.SMTP_SSL(self.smtp_host, self.smtp_port)
