@@ -60,7 +60,7 @@ class AuthMailer(Responder):
         if (self.mail_password):
             server.login(self.mail_from , self.mail_password)
 
-        server.sendmail(self.mail_from, [mail_to], msg.as_string())
+        server.sendmail(self.mail_from, [self.mail_to], msg.as_string())
         server.quit()
         self.report({'message': 'message sent'})
 
