@@ -24,6 +24,13 @@
       "required": false
     },
     {
+      "name": "use_tls",
+      "description": "Whether to use TLS or not.",
+      "type": "boolean",
+      "required": true,
+      "multi": false
+    },
+    {
       "name": "smtp_host",
       "description": "SMTP server used to send mail",
       "type": "string",
