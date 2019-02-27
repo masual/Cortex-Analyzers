@@ -13,8 +13,11 @@ class AuthMailer(Responder):
         self.smtp_host = self.get_param('config.smtp_host', 'localhost')
         self.smtp_port = self.get_param('config.smtp_port', '25')
         self.mail_from = self.get_param('config.from', None, 'Missing sender email address')
-        self.use_tls = self.get_param('config.use_tls', None, 'Missing sender email address')
+        self.use_tls = self.get_param('config.use_tls', False)
         self.mail_password = self.get_param('config.password', None)
+        self.mail_to = self.get_param('config.to', None, 'Missing receiver email address')
+        self.subject_prefix = self.get_param('config.subject_prefix', None)
+
 
     def run(self):
         Responder.run(self)
@@ -30,31 +33,22 @@ class AuthMailer(Responder):
 
         mail_to = None
         if self.data_type == 'thehive:case':
-            # Search recipient address in tags
-            tags = self.get_param('data.tags', None, 'recipient address not found in tags')
-            mail_tags = [t[5:] for t in tags if t.startswith('mail:')]
             case_url = 'http://172.16.4.200:30021/index.html#/case/' + data['id'] + '/details'
             data_json += '\n' + case_url
-            if mail_tags:
-                mail_to = mail_tags.pop()
-            else:
-                self.error('recipient address not found in observables')
+            
         elif self.data_type == 'thehive:alert':
-            # Search recipient address in artifacts
-            artifacts = self.get_param('data.artifacts', None, 'recipient address not found in observables')
-            mail_artifacts = [a['data'] for a in artifacts if a.get('dataType') == 'mail' and 'data' in a]
-            if mail_artifacts:
-                mail_to = mail_artifacts.pop()
-            else:
-                self.error('recipient address not found in observables')
+            pass
         else:
             self.error('Invalid dataType')
 
         msg = MIMEMultipart()
         msg['Subject'] = title
         msg['From'] = self.mail_from
-        msg['To'] = mail_to
+        msg['To'] = self.mail_to
         msg.attach(MIMEText(data_json, 'plain'))
+
+        if(self.subject_prefix):
+            msg['Subject'] = self.subject_prefix + ' ' + msg['Subject']
 
 
         if (self.use_tls):

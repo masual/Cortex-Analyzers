@@ -11,7 +11,7 @@
   "configurationItems": [
     {
       "name": "from",
-      "description": "email address from which the mail is send",
+      "description": "Email address from which the mail is send",
       "type": "string",
       "multi": false,
       "required": true
@@ -45,6 +45,20 @@
       "multi": false,
       "required": true,
       "defaultValue": "25"
+    },
+    {
+      "name": "to",
+      "description": "Email address to which the mail is send",
+      "type": "string",
+      "multi": false,
+      "required": true
+    },
+    {
+      "name": "subject_prefix",
+      "description": "Prefix to the subject field",
+      "type": "string",
+      "multi": false,
+      "required": false
     }
   ]
 }
